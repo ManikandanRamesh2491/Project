@@ -1,0 +1,136 @@
+Jenkins Installation
+--------------------
+
+yum update –y
+
+wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+
+rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+yum upgrade
+
+yum install java-21-amazon-corretto -y
+
+yum install jenkins -y
+
+systemctl enable jenkins
+
+systemctl start jenkins
+
+systemctl status jenkins
+
+cat /var/lib/jenkins/secrets/initialAdminPassword
+
+Setup Slave Server
+------------------
+
+mkdir /home/jenkins
+
+chmod 777 /var/Jenkins
+
+cd /home/jenkins
+
+wget http://172.31.10.245:8080/jnlpJars/agent.jar   
+
+mv agent.jar remoting.jar
+
+
+Maven Installation
+------------------
+
+wget https://dlcdn.apache.org/maven/maven-3/3.9.12/binaries/apache-maven-3.9.12-bin.tar.gz
+
+tar xzvf apache-maven-3.9.12-bin.tar.gz -C /opt
+
+echo 'export PATH=$PATH:/opt/apache-maven-3.9.12/bin' >> /root/.bashrc
+source ~/.bashrc
+
+mvn -v
+
+Tomcat Installation
+-------------------
+
+wget https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.50/bin/apache-tomcat-10.1.50.tar.gz
+
+tar xzvf apache-tomcat-10.1.50.tar.gz -C /opt
+
+echo 'export PATH=$PATH:/opt/apache-tomcat-10.1.50/bin' >> ~/.bashrc
+source ~/.bashrc
+
+nano /opt/apache-tomcat-10.1.50/webapps/manager/META-INF/context.xml
+allow=".*"
+(or)
+allow="0.0.0.0/0"
+
+nano /opt/apache-tomcat-10.1.50/conf/tomcat-users.xml
+<user username="admin" password="admin123" roles="admin-gui,manager-gui,manager-script"/>
+
+catalina.sh start (OR) catalina.sh stop
+
+startup.sh (OR) shutdown.sh
+
+
+Apache Installation
+--------------------
+
+yum install httpd -y
+
+systemctl start httpd
+
+systemctl enable httpd
+
+nano /etc/httpd/conf.d/proxypass.conf
+
+ProxyPass / http://localhost:8080/todo/
+ProxyPassReverse / http://localhost:8080/todo/
+
+systemctl restart httpd
+
+
+Git Installation
+----------------
+
+yum install git -y
+
+which git
+
+---------------
+space increase
+---------------
+swapon --show
+
+fallocate -l 4G /swapfile
+
+dd if=/dev/zero of=/swapfile bs=1M count=4096
+
+chmod 600 /swapfile
+
+mkswap /swapfile
+
+swapon /swapfile
+
+swapon --show
+
+nano /etc/fstab
+
+/swapfile swap swap defaults 0 0
+
+-----------
+temp space
+-----------
+mount | grep /tmp
+
+mount -t tmpfs -o size=2G tmpfs /tmp
+
+nano /etc/fstab
+
+/tmp tmpfs tmpfs size=2G,mode=1777 0 0
+
+df -h
+
+Delete Swap & Temp space
+------------------------
+sudo swapoff -a
+sudo swapon -a
+sudo rm -rf /tmp/*

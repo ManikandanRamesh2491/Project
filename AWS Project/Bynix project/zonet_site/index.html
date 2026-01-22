@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Zonet Technologies — Innovative Cloud & Web Solutions</title>
+  <meta name="description" content="Zonet Technologies — Cloud, DevOps, Web & Mobile Solutions" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23007acc'/%3E%3Cpath d='M16 44L32 18l16 26H16z' fill='%23fff'/%3E%3C/svg%3E">
+  <style>
+    :root{ --bg:#0b1220; --card:#0f1724; --muted:#9aa7c7; --text:#eaf2ff; --accent:#00a6ff; --accent2:#5b7cff; --radius:14px; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial;color:var(--text);background:linear-gradient(180deg,#071028 0%,var(--bg) 100%);-webkit-font-smoothing:antialiased}
+    .container{max-width:1100px;margin:0 auto;padding:28px}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .brand{display:flex;gap:12px;align-items:center;font-weight:800}
+    .brand svg{width:40px;height:40px}
+    .navlinks{display:none;gap:18px;color:var(--muted)}
+    .cta{display:flex;gap:12px}
+    a.btn{padding:10px 14px;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:white;font-weight:700}
+    header.hero{display:grid;grid-template-columns:1fr;gap:24px;padding:40px 0}
+    h1{font-size:clamp(28px,4vw,48px);margin:0 0 12px}
+    p.lead{color:var(--muted);max-width:60ch}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:18px;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.03)}
+    .grid{display:grid;gap:18px}
+    @media(min-width:900px){.navlinks{display:flex}.hero-grid{grid-template-columns:1fr 460px}}
+    .features{display:grid;gap:12px;margin-top:18px}
+    .feature{display:flex;gap:12px;align-items:flex-start}
+    .feature img{width:44px;height:44px;border-radius:10px}
+    .gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}
+    .shot{height:160px;border-radius:10px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.1));display:flex;align-items:center;justify-content:center;color:var(--muted)}
+    .pricing{display:grid;gap:12px;margin-top:18px}
+    @media(min-width:900px){.pricing{grid-template-columns:repeat(3,1fr)}}
+    footer{border-top:1px solid rgba(255,255,255,0.03);padding:26px 0;margin-top:24px;color:var(--muted)}
+    form{display:grid;gap:10px}
+    input,textarea{padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)}
+    .note{font-size:13px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <div class="brand">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#007acc"/><path d="M16 44L32 18l16 26H16z" fill="#fff"/></svg>
+        <div>
+          <div style="font-size:14px;color:var(--muted)">Zonet Technologies</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">Cloud • DevOps • Web</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px">
+        <div class="navlinks">
+          <a href="#services">Services</a>
+          <a href="#work">Work</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="cta"><a class="btn" href="#contact">Get a Quote</a></div>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="hero-grid grid">
+        <div>
+          <h1>We build scalable cloud & web solutions that grow with you.</h1>
+          <p class="lead">Zonet Technologies delivers production‑grade cloud architectures, DevOps automation, and high‑performance web applications. We help startups and enterprises ship faster with reliability and security built‑in.</p>
+          <div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap">
+            <a class="btn" href="#services">Our Services</a>
+            <a class="btn" href="#work">Case Studies</a>
+          </div>
+
+          <section id="services" style="margin-top:22px">
+            <div class="card">
+              <h3>What we do</h3>
+              <div class="features">
+                <div class="feature"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='%23007acc'/%3E%3Cpath d='M7 12l3 3 7-7' fill='white'/%3E%3C/svg%3E" alt="icon"/><div><strong>Cloud Architecture</strong><div class="note">AWS, Azure, GCP — multi‑region resilient designs.</div></div></div>
+                <div class="feature"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='4' fill='%235b7cff'/%3E%3Cpath d='M7 12l3 3 7-7' fill='white'/%3E%3C/svg%3E" alt="icon"/><div><strong>DevOps & Automation</strong><div class="note">CI/CD, IaC (Terraform, CloudFormation), monitoring.</div></div></div>
+                <div class="feature"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='%2300d18a'/%3E%3Cpath d='M7 12l3 3 7-7' fill='white'/%3E%3C/svg%3E" alt="icon"/><div><strong>Web & Mobile Apps</strong><div class="note">React, Next.js, REST/GraphQL, and performant UIs.</div></div></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <aside class="card">
+          <h3>Why Zonet?</h3>
+          <p class="note">Trusted by teams who need reliability and speed. We combine engineering rigor with pragmatic delivery.</p>
+          <div style="margin-top:12px">
+            <strong>Quick facts</strong>
+            <ul class="note">
+              <li>99.99% uptime architectures</li>
+              <li>Average deployment time: days, not weeks</li>
+              <li>Security-first mindset</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <section id="work">
+      <h2>Selected Work</h2>
+      <div class="gallery">
+        <div class="shot">E‑commerce Platform — Scaled to 1M users</div>
+        <div class="shot">SaaS Analytics — Real-time ETL</div>
+        <div class="shot">Media CDN — Global low latency</div>
+        <div class="shot">FinTech MVP — PCI compliant</div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <h2>Pricing</h2>
+      <div class="pricing">
+        <div class="card">
+          <h3>Startup</h3>
+          <p class="note">From $2,999 — basic architecture + MVP deployment</p>
+        </div>
+        <div class="card">
+          <h3>Growth</h3>
+          <p class="note">From $9,999 — multi‑region, scaling, monitoring</p>
+        </div>
+        <div class="card">
+          <h3>Enterprise</h3>
+          <p class="note">Custom — SLA, compliance, on‑call engineering</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact us</h2>
+      <div style="display:grid;grid-template-columns:1fr;gap:12px">
+        <div class="card">
+          <form id="contactForm">
+            <label for="name">Name</label>
+            <input id="name" name="name" required placeholder="Your name">
+            <label for="email">Email</label>
+            <input id="email" type="email" name="email" required placeholder="you@company.com">
+            <label for="msg">Message</label>
+            <textarea id="msg" name="message" rows="5" required placeholder="Tell us about your project"></textarea>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+              <button class="btn" type="submit">Send Message</button>
+              <div id="status" class="note"></div>
+            </div>
+          </form>
+          <p class="note" style="margin-top:10px">This demo can POST to a Python Flask endpoint (see app.py below) or to any serverless form handler.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div>© <span id="year"></span> Zonet Technologies</div>
+        <div class="note">Built with care • cloud native</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // small client-side JS: handle contact form post to /contact
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const form = document.getElementById('contactForm');
+    const status = document.getElementById('status');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = 'Sending...';
+      const data = { name: form.name.value, email: form.email.value, message: form.message.value };
+      try {
+        const res = await fetch('/contact', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
+        });
+        if (res.ok) { status.textContent = 'Message sent — we will reply soon.'; form.reset(); }
+        else { status.textContent = 'Failed to send. Try again later.'; }
+      } catch (err) { status.textContent = 'Network error — could not reach server.'; }
+    });
+  </script>
+
+</body>
+</html>

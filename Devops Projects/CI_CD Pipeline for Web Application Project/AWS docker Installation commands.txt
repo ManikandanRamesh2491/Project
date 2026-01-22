@@ -1,0 +1,221 @@
+sudo yum update -y
+sudo yum install -y docker
+systemctl enable docker
+systemctl start docker
+sudo usermod -a -G docker ec2-user
+
+sudo docker pull httpd
+docker images
+docker run -itd -p "8000:80" httpd
+docker ps => running container only visiable
+docker ps -a => all containers visiable
+docker exec -it 1575 /bin/bash
+apt-get update
+apt install vim
+exit
+docker stop 1575
+docker start 1575
+docker rm 1575
+docker rm -f 1575
+docker rmi httpd
+docker logs id | name
+docker inspect id | name
+docker stats (id | name => optional)
+docker top id | name
+docker commit 15 kaashiv:v1.0
+docker save -o /kaashiv_v1.tar kaashiv:v1.0
+
+docker login
+docker tag kaashiv:v1.0 username/kaashiv_v1:v1.0
+docker push username/kaashiv_v1
+
+
+pipeline - final
+----------
+pipeline {
+    agent { label 'web-server' }
+    tools {
+        maven 'Maven_3.9.12'
+    }
+    environment {
+        // Replace with your ECR repo URI and region
+        ECR_REGISTRY = '857360183783.dkr.ecr.ap-south-1.amazonaws.com'
+        ECR_REPO = 'aman_ecr'
+        IMAGE_TAG = "build-${env.BUILD_NUMBER}"
+        // Replace with your AWS credential ID in Jenkins
+        AWS_CREDENTIAL_ID = 'aws-creds'
+        // Replace with your ECS cluster and service names
+        ECS_CLUSTER = 'Aman_ecs_cluster'
+        //ECS_SERVICE = 'my-ecs-service'
+        ECS_TASK_DEFINITION = 'aman_ecs_task'
+    }
+    stages {
+        stage('Checkout Code') {
+            steps {
+                // Fetch code from your SCM (e.g., Git)
+                git branch: 'main', credentialsId: 'Git-user', url: 'https://github.com/ManikandanRamesh2491/AmanHotel.git'
+            }
+        }
+        stage('Build Image') {
+            steps {
+                script {
+		            sh "mvn package"
+                    sh "docker build -t 857360183783.dkr.ecr.ap-south-1.amazonaws.com/aman_ecr:latest ."
+                }
+            }
+        }
+        stage('Push to ECR') {
+            steps {
+                // Authenticate Docker with ECR and push the image
+                //withAWS(credentials: aws-creds, region: 'ap-south-1') {
+                    sh """
+        		       aws ecr get-login-password --region ap-south-1 \
+        		       | docker login --username AWS --password-stdin 857360183783.dkr.ecr.ap-south-1.amazonaws.com
+   		               """
+    		        sh """
+                        docker push 857360183783.dkr.ecr.ap-south-1.amazonaws.com/aman_ecr:latest
+    			       """
+                //}
+            }
+        }
+        stage('Deploy to ECS') {
+            steps {
+                script {
+                    // This uses AWS CLI to update the ECS service
+                    sh """
+            		aws ecs run-task \
+             		--cluster $ECS_CLUSTER \
+              		--task-definition $ECS_TASK_DEFINITION \
+              		--launch-type FARGATE \
+              		--network-configuration "awsvpcConfiguration={
+                        subnets=[subnet-063d29e7244d39e60],
+                        securityGroups=[sg-00065a059b966f973],
+                        assignPublicIp=ENABLED
+              		}"
+                      """
+                }
+            }
+        }
+    }
+}
+
+
+
+
+pipeline 4
+----------
+
+pipeline {
+    agent any
+    environment {
+        // Replace with your ECR repo URI and region
+        ECR_REGISTRY = '123456789012.dkr.ecr.us-east-1.amazonaws.com'
+        ECR_REPO = 'my-app-repo'
+        IMAGE_TAG = "build-${env.BUILD_NUMBER}"
+        // Replace with your AWS credential ID in Jenkins
+        AWS_CREDENTIAL_ID = 'your-aws-credential-id' 
+        // Replace with your ECS cluster and service names
+        ECS_CLUSTER = 'my-ecs-cluster'
+        ECS_SERVICE = 'my-ecs-service'
+        ECS_TASK_DEFINITION = 'my-task-definition'
+    }
+    stages {
+        stage('Checkout Code') {
+            steps {
+                // Fetch code from your SCM (e.g., Git)
+                git branch: 'main', credentialsId: 'github-credential-id', url: 'github.com'
+            }
+        }
+        stage('Build Image') {
+            steps {
+                script {
+		    sh "mvn package"
+                    sh "docker build -t $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG ."
+                }
+            }
+        }
+        stage('Push to ECR') {
+            steps {
+                // Authenticate Docker with ECR and push the image
+                withAWS(credentials: AWS_CREDENTIAL_ID, region: 'us-east-1') {
+                    sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY"
+                    sh "docker push $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG"
+                }
+            }
+        }
+        stage('Deploy to ECS') {
+            steps {
+                script {
+                    // This uses AWS CLI to update the ECS service
+                    sh "aws ecs update-service --cluster $ECS_CLUSTER --service $ECS_SERVICE --force-new-deployment"
+                }
+            }
+        }
+    }
+}
+
+
+
+Pipeline input
+---------------
+pipeline {
+    agent { label 'web-server' }
+
+    tools {
+        maven 'Maven_3.9.12'
+    }
+
+    environment {
+        // Replace with your ECR repo URI and region
+        ECR_REGISTRY = '857360183783.dkr.ecr.ap-south-1.amazonaws.com'
+        ECR_REPO = 'aman_ecr'
+        IMAGE_TAG = "build-${env.BUILD_NUMBER}"
+        // Replace with your AWS credential ID in Jenkins
+        AWS_CREDENTIAL_ID = 'aws-creds' 
+        // Replace with your ECS cluster and service names
+        ECS_CLUSTER = 'Aman_ecs_cluster'
+        //ECS_SERVICE = 'my-ecs-service'
+        ECS_TASK_DEFINITION = 'aman_ecs_task'
+    }
+    stages {
+        stage('Checkout Code') {
+            steps {
+                // Fetch code from your SCM (e.g., Git)
+                git branch: 'main', credentialsId: 'Git-user', url: 'https://github.com/ManikandanRamesh2491/AmanHotel.git'
+            }
+        }
+        stage('Build Image') {
+            steps {
+                script {
+		    sh "mvn package"
+                    sh "docker build -t $857360183783.dkr.ecr.ap-south-1.amazonaws.com/aman_ecr:latest"
+                }
+            }
+        }
+        stage('Push to ECR') {
+            steps {
+                // Authenticate Docker with ECR and push the image
+                withAWS(credentials: aws-creds, region: 'ap-south-1') {
+                     sh """
+        		aws ecr get-login-password --region ap-south-1 \
+        		| docker login --username AWS --password-stdin 857360183783.dkr.ecr.ap-south-1.amazonaws.com
+   		        """
+
+    		     sh """
+                        docker push 857360183783.dkr.ecr.ap-south-1.amazonaws.com/aman_ecr:latest
+    			"""
+                }
+            }
+        }
+        stage('Deploy to ECS') {
+            steps {
+		script {
+            		sh """
+            		aws ecs run-task \
+             		--cluster $cluster $aman_ecr \
+              		--task-definition $aman_ecs_task \
+                           """
+            }
+        }
+    }
+}

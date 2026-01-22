@@ -1,0 +1,69 @@
+pipeline - final
+----------
+pipeline {
+    agent { label 'web-server' }
+    tools {
+        maven 'Maven-3.9.12'
+    }
+    environment {
+        // Replace with your ECR repo URI and region
+        ECR_REGISTRY = '857360183783.dkr.ecr.ap-south-1.amazonaws.com' 
+        ECR_REPO = 'amanhotel_ecr'
+        IMAGE_TAG = "build-${env.BUILD_NUMBER}"
+        // Replace with your AWS credential ID in Jenkins
+        AWS_CREDENTIAL_ID = 'aws-creds'
+        // Replace with your ECS cluster and service names
+        ECS_CLUSTER = 'Aman_Hotel_cluster'
+        //ECS_SERVICE = 'my-ecs-service'
+        ECS_TASK_DEFINITION = 'Aman_hotel_task'
+    }
+    stages {
+        stage('Checkout Code') {
+            steps {
+                // Fetch code from your SCM (e.g., Git)
+                git branch: 'main', credentialsId: 'Git-user', url: 'https://github.com/ManikandanRamesh2491/AmanHotel.git'
+            }
+        }
+        stage('Build Image') {
+            steps {
+                script {
+		            sh "mvn package"
+                    sh "docker build -t amanhotel_ecr ."
+                    sh "docker tag amanhotel_ecr:latest 857360183783.dkr.ecr.ap-south-1.amazonaws.com/amanhotel_ecr:latest"
+                    //sh "docker build -t 857360183783.dkr.ecr.ap-south-1.amazonaws.com/amanhotel_ecr ."
+                }
+            }
+        }
+        stage('Push to ECR') {
+            steps {
+                // Authenticate Docker with ECR and push the image
+                //withAWS(credentials: aws-creds, region: 'ap-south-1') {
+                    sh """
+        		       aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 857360183783.dkr.ecr.ap-south-1.amazonaws.com
+   		               """
+    		        sh """
+                        docker push 857360183783.dkr.ecr.ap-south-1.amazonaws.com/amanhotel_ecr:latest
+    			       """
+                //}
+            }
+        }
+        stage('Deploy to ECS') {
+            steps {
+                script {
+                    // This uses AWS CLI to update the ECS service
+                    sh """
+            		aws ecs run-task \
+             		--cluster $ECS_CLUSTER \
+              		--task-definition $ECS_TASK_DEFINITION \
+              		--launch-type FARGATE \
+              		--network-configuration "awsvpcConfiguration={
+                        subnets=[subnet-063d29e7244d39e60],
+                        securityGroups=[sg-00065a059b966f973],
+                        assignPublicIp=ENABLED
+              		}"
+                      """
+                }
+            }
+        }
+    }
+}
